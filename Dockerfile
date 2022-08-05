@@ -12,4 +12,5 @@ COPY --from=build /app ./
 
 # EXPOSE 5000 5001 80
 
-ENTRYPOINT ["dotnet", "JwtWebApi.dll"]
+# ENTRYPOINT ["dotnet", "JwtWebApi.dll"]
+CMD ASPNETCORE_URLS="http://*:$PORT" dotnet JwtWebApi.dll
