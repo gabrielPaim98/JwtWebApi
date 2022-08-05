@@ -1,0 +1,41 @@
+version: "3.9"
+services:
+    web:
+        build: .
+        environment:
+            ASPNETCORE_ENVIRONMENT: "Development"
+            ASPNETCORE_URLS: "http://+:5000;https://+:5001"
+            ASPNETCORE_Kestrel__Certificates__Default__Password: "Gabriel"
+            ASPNETCORE_Kestrel__Certificates__Default__Path: "/home/gabriel/Documents/projects/JwtWebApi/localhost.pfx"
+        ports:
+            - "5000:5000"
+            - "5001:5001"
+            - "80:80"
+        depends_on:
+            - db
+        volumes:
+            - type: bind
+              source: /home/gabriel/Documents/projects/JwtWebApi/localhost.pfx
+              target: /home/gabriel/Documents/projects/JwtWebApi/localhost.pfx
+              read_only: true
+    db:
+        image: "mcr.microsoft.com/mssql/server:2019-latest"
+        environment:
+            SA_PASSWORD: "admin@1234"
+            ACCEPT_EULA: "Y"
+        # network_mode: "host"
+        ports:
+            - '1431:1431'
+            - '1433:1433'
+            - '1434:1434'
+            - '1435:1435'
+        expose:
+            - 1431
+            - 1433
+            - 1434
+            - 1435
+        volumes:
+            - jwt-vol:/db
+
+volumes:
+    jwt-vol:
